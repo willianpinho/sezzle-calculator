@@ -1,0 +1,69 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #17231f;
+  background: #f7f5ee;
+  font-synthesis: none;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, input, select { font: inherit; }
+.page-shell {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 1.5rem;
+  background: radial-gradient(circle at top left, #d5eee4, transparent 40%), #f7f5ee;
+}
+.calculator {
+  width: min(100%, 42rem);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid #c7d7cf;
+  border-radius: 1.5rem;
+  background: #fffefa;
+  box-shadow: 0 1.25rem 3rem #183e3330;
+}
+.eyebrow { margin: 0 0 .5rem; color: #0a756a; font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
+h1 { margin: 0; color: #102c29; font-size: clamp(2.25rem, 8vw, 3.5rem); line-height: 1; letter-spacing: -.06em; }
+.intro { margin: .9rem 0 2rem; color: #52655d; font-size: 1.05rem; line-height: 1.5; }
+form { display: grid; gap: 1.25rem; }
+.numbers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.field { display: grid; gap: .45rem; }
+label { color: #28413a; font-size: .9rem; font-weight: 700; }
+input, select {
+  width: 100%;
+  min-height: 3rem;
+  padding: .7rem .8rem;
+  border: 1px solid #9db6aa;
+  border-radius: .65rem;
+  color: #17231f;
+  background: #fff;
+}
+input:focus, select:focus { outline: 3px solid #7ad8ca; outline-offset: 2px; border-color: #0a756a; }
+.hint { margin: -.55rem 0 0; color: #52655d; font-size: .9rem; }
+button {
+  min-height: 3.25rem;
+  border: 0;
+  border-radius: .65rem;
+  color: #fff;
+  background: #0a756a;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease;
+}
+button:hover:not(:disabled) { background: #075e55; transform: translateY(-1px); }
+button:focus-visible { outline: 3px solid #1c2c29; outline-offset: 3px; }
+button:disabled { opacity: .65; cursor: wait; }
+.result {
+  display: grid;
+  min-height: 5.75rem;
+  margin-top: 1.5rem;
+  padding: 1rem 1.15rem;
+  border-radius: .75rem;
+  color: #365048;
+  background: #e8f5ef;
+  align-content: center;
+}
+.result span:first-child { font-size: .8rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.result strong { color: #073f38; font-size: clamp(1.6rem, 7vw, 2.6rem); letter-spacing: -.04em; overflow-wrap: anywhere; }
+.result .error { color: #8e2020; font-weight: 700; letter-spacing: normal; text-transform: none; }
+@media (max-width: 30rem) { .page-shell { padding: .75rem; } .calculator { padding: 1.25rem; border-radius: 1rem; } .numbers { grid-template-columns: 1fr; } }
