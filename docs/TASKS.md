@@ -2,16 +2,16 @@
 
 Goal: deliver the Sezzle calculator assignment, including all optional operations and Docker, with Go backend and React/TypeScript frontend. User authorized autonomous implementation, repository publication, and reviews.
 
-| Task | Accountable specialist / tier | Dependencies | Status / evidence |
-| --- | --- | --- | --- |
-| S1 Specification and API contract | backend-architect / balanced | none | Verified: SPEC.md and DECISIONS.md contract reviewed |
-| S2 Go implementation and unit/integration tests | backend-developer / balanced | S1 | Verified: race tests, coverage, vet; BACKEND-RECEIPT.md |
-| S3 React implementation and unit tests | frontend-developer / balanced | S1 | Verified: lint, types, unit coverage, build; FRONTEND-RECEIPT.md |
-| S4 Delivery tooling, Docker, CI, README | backend-architect / balanced | S1 | Verified: final Docker image and API/UI smoke; DELIVERY.md |
-| S5 Browser E2E and acceptance verification | test-automator / balanced | S2,S3,S4 | Verified: 36 E2E tests, three browser projects; QA-RECEIPT.md |
-| S6 Code review | code-reviewer / balanced | S5 | Approved; CODE-REVIEW.md; documentation comments resolved |
-| S7 API domain review | api-designer / balanced | S6 | Approved; API-REVIEW.md; static-route wording clarified |
-| S8 Adversarial review | devils-advocate / frontier-max | S7 | Completed; ADVERSARIAL-REVIEW.md; all concrete findings resolved |
-| S9 Publish, CI, merge, final verification | Maestro (coordination) | S8 | In progress; local acceptance and all reviews complete |
+| Task                                            | Accountable specialist / tier  | Dependencies | Status / evidence                                                                                                                                                                                                                 |
+| ----------------------------------------------- | ------------------------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S1 Specification and API contract               | backend-architect / balanced   | none         | Verified: SPEC.md and DECISIONS.md contract reviewed                                                                                                                                                                              |
+| S2 Go implementation and unit/integration tests | backend-developer / balanced   | S1           | Verified: race tests, coverage, vet; BACKEND-RECEIPT.md                                                                                                                                                                           |
+| S3 React implementation and unit tests          | frontend-developer / balanced  | S1           | Verified: lint, types, unit coverage, build; FRONTEND-RECEIPT.md                                                                                                                                                                  |
+| S4 Delivery tooling, Docker, CI, README         | backend-architect / balanced   | S1           | Verified: final Docker image and API/UI smoke; DELIVERY.md                                                                                                                                                                        |
+| S5 Browser E2E and acceptance verification      | test-automator / balanced      | S2,S3,S4     | Verified: 36 E2E tests, three browser projects; QA-RECEIPT.md                                                                                                                                                                     |
+| S6 Code review                                  | code-reviewer / balanced       | S5           | Approved; CODE-REVIEW.md; documentation comments resolved                                                                                                                                                                         |
+| S7 API domain review                            | api-designer / balanced        | S6           | Approved; API-REVIEW.md; static-route wording clarified                                                                                                                                                                           |
+| S8 Adversarial review                           | devils-advocate / frontier-max | S7           | Completed; ADVERSARIAL-REVIEW.md; all concrete findings resolved                                                                                                                                                                  |
+| S9 Publish, CI, merge, final verification       | Maestro (coordination)         | S8           | Published; hosted CI verified in [run 38672809082](https://github.com/willianpinho/sezzle-calculator/actions/runs/38672809082). Final checks and merge receipt: [PR #1](https://github.com/willianpinho/sezzle-calculator/pull/1) |
 
 Implementation uses a dedicated feature worktree. Specialists share this worktree with exclusive directory ownership to avoid conflicting changes; no agent commits independently. The main checkout remains clean. This bounded shared-worktree arrangement is intentional for a new repository.

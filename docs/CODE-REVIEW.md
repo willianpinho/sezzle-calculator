@@ -95,3 +95,26 @@ cleanup, and coverage documentation changed; production source is unchanged.
 
 Direct rerun of `go test -race -coverprofile=coverage.out ./...` and `go vet
 ./...` passed; `git diff --check HEAD` passed. **Final delta verdict: approve.**
+
+## Publication delta review
+
+Reviewed the final publication-only delta: README shell-directory corrections,
+hosted-CI evidence, and the workflow runtime update. No production code changed.
+
+- [`README.md:42`](../README.md#L42) keeps browser installation in a subshell,
+  so the following Make targets still execute from the repository root.
+- [`README.md:48`](../README.md#L48) runs the Go HTML coverage viewer from its
+  module directory, where the generated coverage profile exists.
+- [`.github/workflows/ci.yml:18`](../.github/workflows/ci.yml#L18) pins actions
+  to immutable release commits and Ubuntu 24.04. Direct `git ls-remote`
+  verification matches the stated v7/v6 release refs, including the dereferenced
+  annotated `pnpm/action-setup` v6.1.0 tag. `actionlint` and `git diff --check`
+  pass.
+- [`docs/VERIFICATION.md:68`](VERIFICATION.md#L68) accurately distinguishes the
+  successful initial hosted run from the final workflow/doc revision, which must
+  run in CI before merge. GitHub confirms run 38672809082 succeeded for all
+  three jobs and published three artifacts.
+
+**Publication delta verdict: approve.** This approval covers the uncommitted
+documentation/workflow delta; the hosted CI run on its final head remains the
+required merge gate.

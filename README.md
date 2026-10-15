@@ -39,14 +39,14 @@ make lint
 make typecheck
 make test
 make build
-cd frontend && pnpm exec playwright install chromium firefox
+(cd frontend && pnpm exec playwright install chromium firefox)
 make e2e
 make docker-build
 ```
 
 `make test` runs race-enabled Go tests with coverage and frontend coverage
-tests. Open Go's report with `go tool cover -html=backend/coverage.out`; open
-the frontend report at `frontend/coverage/index.html`. `make e2e` exercises
+tests. Open Go's report with `(cd backend && go tool cover -html=coverage.out)`;
+open the frontend report at `frontend/coverage/index.html`. `make e2e` exercises
 the production build through Playwright after installing its browsers. CI also
 builds and runs the container, requests the health endpoint, posts a real
 calculation, loads the UI, and publishes coverage and Playwright artifacts.

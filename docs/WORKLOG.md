@@ -81,3 +81,20 @@ All three review stages are complete. The code reviewer also approved the final
 test/workflow delta after the adversarial corrections. The final local gate run
 reproduced only the already-adjudicated checker false positives and explicitly
 unavailable optional checks. Publication and hosted CI are the remaining steps.
+
+## GitHub publication checkpoint
+
+The implementation is published in the public repository through
+[PR #1](https://github.com/willianpinho/sezzle-calculator/pull/1).
+[The initial hosted CI run](https://github.com/willianpinho/sezzle-calculator/actions/runs/38672809082)
+passed all three jobs: frontend, backend, and browser/container validation.
+Coverage reports and the Playwright report were uploaded as run artifacts.
+
+The final documentation read found two shell-directory issues: installing
+Playwright browsers must not leave subsequent Makefile commands in the frontend
+directory, and Go's HTML coverage viewer must run inside the backend module.
+Both commands were corrected and the coverage HTML was generated successfully.
+The runner's action-runtime deprecation annotations prompted an update to
+official supported action releases and an explicit Ubuntu 24.04 runner. The
+final documentation/workflow revision is reviewed separately and must pass the
+same hosted jobs before merge; the PR records the final head and merge status.
