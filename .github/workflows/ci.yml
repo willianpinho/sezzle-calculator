@@ -47,8 +47,10 @@ jobs:
         with:
           go-version: 1.27.2
           cache: false
-      - run: go vet ./...
-      - run: go test -race -coverprofile=coverage.out ./...
+      - run: |
+          go test -race -count=1 -coverprofile=coverage.out ./...
+          go tool cover -func=coverage.out | awk '/^total:/{seen=1; if ($3 != "100.0%") exit 1} END {if (!seen) exit 1}'
+          go vet ./...
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
@@ -75,7 +77,7 @@ jobs:
           cache: false
       - run: pnpm install --frozen-lockfile
         working-directory: frontend
-      - run: pnpm exec playwright install --with-deps chromium firefox
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
         working-directory: frontend
       - run: pnpm test:e2e
         working-directory: frontend
@@ -101,6 +103,21 @@ jobs:
               });
             '
           curl --fail --silent --show-error http://127.0.0.1:8080/ | grep -qi '<!doctype html>'
+          curl --fail --silent --show-error http://127.0.0.1:8080/api/openapi.json | node -e '
+            let body = "";
+            process.stdin.on("data", (chunk) => { body += chunk; });
+            process.stdin.on("end", () => {
+              const document = JSON.parse(body);
+              if (!document.openapi || !document.paths["/api/calculate"]) {
+                process.exitCode = 1;
+              }
+            });
+          '
+          curl --silent --show-error --output /dev/null --write-out '%{http_code} %{redirect_url}' \
+            http://127.0.0.1:8080/api/docs | grep -E '^307 .*/docs/$'
+          for asset in swagger-ui-bundle.js swagger-ui.css swagger-ui-bundle.js.LICENSE.txt LICENSE NOTICE; do
+            curl --fail --silent --show-error --output /dev/null "http://127.0.0.1:8080/docs/$asset"
+          done
       - run: docker rm --force calculator
         if: always()
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

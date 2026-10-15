@@ -1,0 +1,371 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Sezzle Calculator API",
+    "version": "1.0.0",
+    "description": "Stateless finite-binary64 calculator. Error messages are explanatory; HTTP status and error.code are stable."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Same-origin deployment"
+    }
+  ],
+  "security": [],
+  "paths": {
+    "/api/calculate": {
+      "post": {
+        "summary": "Calculate a finite real result",
+        "operationId": "calculate",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculationRequest"
+              },
+              "examples": {
+                "add": {
+                  "value": {
+                    "operation": "add",
+                    "a": 2,
+                    "b": 3
+                  }
+                },
+                "subtract": {
+                  "value": {
+                    "operation": "subtract",
+                    "a": 5,
+                    "b": 3
+                  }
+                },
+                "multiply": {
+                  "value": {
+                    "operation": "multiply",
+                    "a": -2,
+                    "b": 3
+                  }
+                },
+                "divide": {
+                  "value": {
+                    "operation": "divide",
+                    "a": 7,
+                    "b": 2
+                  }
+                },
+                "power": {
+                  "value": {
+                    "operation": "power",
+                    "a": 2,
+                    "b": 8
+                  }
+                },
+                "sqrt": {
+                  "value": {
+                    "operation": "sqrt",
+                    "a": 9
+                  }
+                },
+                "percentage": {
+                  "value": {
+                    "operation": "percentage",
+                    "a": 25,
+                    "b": 80
+                  }
+                },
+                "divisionByZero": {
+                  "summary": "Domain error",
+                  "value": {
+                    "operation": "divide",
+                    "a": 1,
+                    "b": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Finite result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationSuccess"
+                },
+                "example": {
+                  "result": 5
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/InvalidJSON"
+          },
+          "413": {
+            "$ref": "#/components/responses/PayloadTooLarge"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "422": {
+            "$ref": "#/components/responses/CalculationFailure"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Report process health",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          }
+        }
+      }
+    },
+    "/api/openapi.json": {
+      "get": {
+        "summary": "Retrieve this OpenAPI document",
+        "operationId": "getOpenAPI",
+        "responses": {
+          "200": {
+            "description": "OpenAPI 3.1 document",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          }
+        }
+      }
+    },
+    "/api/docs": {
+      "get": {
+        "summary": "Redirect to the bundled API documentation UI",
+        "operationId": "redirectToDocs",
+        "responses": {
+          "307": {
+            "description": "Temporary redirect to /docs/",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "const": "/docs/"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FiniteNumber": {
+        "type": "number",
+        "description": "A JSON number parsed to finite IEEE-754 binary64. NaN and infinity are rejected; out-of-range numeric tokens are validation errors. Signed zero is valid."
+      },
+      "BinaryCalculation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation",
+          "a",
+          "b"
+        ],
+        "properties": {
+          "operation": {
+            "type": "string",
+            "enum": [
+              "add",
+              "subtract",
+              "multiply",
+              "divide",
+              "power",
+              "percentage"
+            ]
+          },
+          "a": {
+            "$ref": "#/components/schemas/FiniteNumber"
+          },
+          "b": {
+            "$ref": "#/components/schemas/FiniteNumber"
+          }
+        }
+      },
+      "SqrtCalculation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "operation",
+          "a"
+        ],
+        "properties": {
+          "operation": {
+            "const": "sqrt"
+          },
+          "a": {
+            "$ref": "#/components/schemas/FiniteNumber"
+          }
+        }
+      },
+      "CalculationRequest": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/BinaryCalculation"
+          },
+          {
+            "$ref": "#/components/schemas/SqrtCalculation"
+          }
+        ],
+        "description": "percentage is a percent of b. 0^0 returns 1. Division by either signed zero, negative sqrt, negative-base/non-integral power, and non-finite results are domain errors. Finite underflow is successful."
+      },
+      "CalculationSuccess": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "result"
+        ],
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/FiniteNumber"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "invalid_json",
+                  "payload_too_large",
+                  "unsupported_media_type",
+                  "validation_error",
+                  "domain_error",
+                  "method_not_allowed",
+                  "not_found"
+                ]
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Health": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "const": "ok"
+          }
+        }
+      }
+    },
+    "responses": {
+      "InvalidJSON": {
+        "description": "Malformed JSON, duplicate keys, multiple values, or a non-object body.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "PayloadTooLarge": {
+        "description": "Request body exceeds 1 MiB.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "UnsupportedMediaType": {
+        "description": "Content-Type is not application/json.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "CalculationFailure": {
+        "description": "validation_error for shape/input validation; domain_error for undefined, non-real, or non-finite calculations.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "example": {
+              "error": {
+                "code": "domain_error",
+                "message": "calculation has no finite real result"
+              }
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "Method is not allowed; the response sets Allow.",
+        "headers": {
+          "Allow": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

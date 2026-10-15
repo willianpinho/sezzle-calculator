@@ -10,6 +10,9 @@ var ErrDomain = errors.New("calculation has no finite real result")
 
 // Calculate evaluates an operation using IEEE-754 binary64 arithmetic.
 func Calculate(operation string, a, b float64) (float64, error) {
+	if math.IsNaN(a) || math.IsInf(a, 0) || math.IsNaN(b) || math.IsInf(b, 0) {
+		return 0, ErrDomain
+	}
 	var result float64
 	switch operation {
 	case "add":

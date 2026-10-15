@@ -85,4 +85,23 @@ project was written without AI assistance.
 > properties. Keep the request timeout active through response-body parsing,
 > not just until response headers arrive.
 
+### Numeric, responsive, and API-documentation follow-up
+
+> Audit undefined and boundary mathematical cases under finite IEEE-754
+> binary64 rules; test the server, browser, and mobile layouts deeply; retain
+> `0^0 = 1`, documented rounding, and finite-underflow behavior. Add a
+> same-origin OpenAPI document and locally bundled Swagger UI with no CDN.
+> Consolidate documentation with diagrams and clearly distinguish historical
+> receipts from fresh acceptance evidence. Keep all seven calculator operations
+> and avoid adding persistence or external services.
+
+### Meaningful coverage extension
+
+> Raise coverage to 100% for owned production code through behavioral tests of
+> server lifecycle, HTTP branches, frontend bootstrap, and Swagger build
+> tooling. Do not exclude production paths, weaken behavior, delete error
+> handling, or add assertion-only tests to improve a percentage. Re-run the
+> full regression suite and have an independent reviewer inspect the final
+> coverage report before making a 100% claim.
+
 Review prompts and final receipts are linked from the delivery ledger.

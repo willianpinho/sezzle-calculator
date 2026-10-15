@@ -7,7 +7,7 @@ dev:
 	@echo "Run 'make api' and 'cd frontend && pnpm dev' in separate terminals."
 
 test:
-	cd backend && go test -race -coverprofile=coverage.out ./...
+	cd backend && go test -race -count=1 -coverprofile=coverage.out ./... && go tool cover -func=coverage.out | awk '/^total:/{seen=1; if ($$3 != "100.0%") exit 1} END {if (!seen) exit 1}' && go vet ./...
 	cd frontend && pnpm test:coverage
 
 lint:

@@ -5,6 +5,7 @@ backend/coverage.out
 backend/server
 frontend/node_modules
 frontend/dist
+frontend/public/docs
 frontend/coverage
 frontend/playwright-report
 frontend/test-results

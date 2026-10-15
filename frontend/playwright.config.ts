@@ -18,16 +18,48 @@ export default defineConfig({
     video: "retain-on-failure",
   },
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
     {
-      name: "mobile-chromium",
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+      testIgnore: ["**/numeric-boundaries.spec.ts", "**/responsive.spec.ts"],
+    },
+    {
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
+      testIgnore: ["**/numeric-boundaries.spec.ts", "**/responsive.spec.ts"],
+    },
+    {
+      name: "webkit-iphone-emulation",
       use: {
         ...devices["iPhone 13"],
-        browserName: "chromium",
-        viewport: { width: 320, height: 700 },
       },
+      testIgnore: ["**/numeric-boundaries.spec.ts", "**/responsive.spec.ts"],
     },
-    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
+    {
+      name: "numeric-chromium",
+      use: { ...devices["Desktop Chrome"] },
+      testMatch: "**/numeric-boundaries.spec.ts",
+    },
+    {
+      name: "responsive-webkit-390",
+      use: { ...devices["iPhone 13"] },
+      testMatch: "**/responsive.spec.ts",
+    },
+    ...[
+      ["responsive-320", 320, 700],
+      ["responsive-375", 375, 760],
+      ["responsive-390", 390, 844],
+      ["responsive-768", 768, 1024],
+      ["responsive-1024", 1024, 768],
+      ["responsive-landscape", 844, 390],
+    ].map(([name, width, height]) => ({
+      name: name as string,
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: width as number, height: height as number },
+      },
+      testMatch: "**/responsive.spec.ts",
+    })),
   ],
   webServer: {
     command:
