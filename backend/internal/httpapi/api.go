@@ -31,6 +31,10 @@ func (a API) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+	case "/api/openapi.json":
+		a.openAPI(w, r)
+	case "/api/docs":
+		a.docsRedirect(w, r)
 	default:
 		if r.URL.Path == "/api" || (len(r.URL.Path) >= 5 && r.URL.Path[:5] == "/api/") {
 			writeError(w, http.StatusNotFound, "not_found", "route not found")
@@ -111,11 +115,7 @@ func decodeObject(w http.ResponseWriter, r *http.Request) (map[string]json.RawMe
 			writeDecodeError(w, decodeErr)
 			return nil, decodeErr
 		}
-		key, ok := keyToken.(string)
-		if !ok {
-			writeError(w, http.StatusBadRequest, "invalid_json", "malformed JSON")
-			return nil, errors.New("invalid key")
-		}
+		key := keyToken.(string) // Decoder.Token returns strings for object member names.
 		if _, exists := fields[key]; exists {
 			writeError(w, http.StatusBadRequest, "invalid_json", "duplicate object field")
 			return nil, errors.New("duplicate field")
@@ -174,11 +174,7 @@ func requiredNumber(fields map[string]json.RawMessage, key string) (float64, err
 	if len(raw) == 0 || (raw[0] != '-' && (raw[0] < '0' || raw[0] > '9')) {
 		return 0, fmt.Errorf("%s must be a number", key)
 	}
-	var number json.Number
-	if json.Unmarshal(raw, &number) != nil {
-		return 0, fmt.Errorf("%s must be a number", key)
-	}
-	value, err := strconv.ParseFloat(number.String(), 64)
+	value, err := strconv.ParseFloat(string(raw), 64)
 	if err != nil || math.IsInf(value, 0) || math.IsNaN(value) {
 		return 0, fmt.Errorf("%s must be a finite number", key)
 	}

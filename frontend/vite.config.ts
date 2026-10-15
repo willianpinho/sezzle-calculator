@@ -11,15 +11,21 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
-    include: ["src/**/*.test.{ts,tsx}"],
+    include: ["src/**/*.test.{ts,tsx}", "scripts/**/*.test.mjs"],
     coverage: {
       provider: "v8",
+      include: ["src/**/*.{ts,tsx}", "scripts/**/*.mjs"],
+      exclude: [
+        "src/**/*.test.{ts,tsx}",
+        "src/test/**",
+        "scripts/**/*.test.mjs",
+      ],
       reporter: ["text", "html", "lcov", "json-summary"],
       thresholds: {
-        lines: 85,
-        functions: 85,
-        branches: 80,
-        statements: 85,
+        lines: 100,
+        functions: 100,
+        branches: 100,
+        statements: 100,
       },
     },
   },

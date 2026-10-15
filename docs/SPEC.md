@@ -58,15 +58,30 @@ Calculation and API-route failures always use:
 | 422    | `validation_error`       | Unknown/extra fields; unknown operation; missing, null, or non-number operands; operand supplied to `sqrt`. |
 | 422    | `domain_error`           | Division by zero; negative square root; a calculation whose result is NaN or infinity.                      |
 | 405    | `method_not_allowed`     | Any method other than POST on this route.                                                                   |
-| 404    | `not_found`              | Unknown API route (`/api` or `/api/*`).                                                                                          |
+| 404    | `not_found`              | Unknown API route (`/api` or `/api/*`).                                                                     |
 
-The API rejects unknown request fields to catch client mistakes. It does not
-accept `NaN` or infinity as inputs; JSON itself has no valid representation for
-them. Results follow Go/IEEE-754 binary64 arithmetic, then must be finite.
-Overflow and indeterminate operations therefore return `422 domain_error`.
-Underflow to a finite zero is valid. `0^0` explicitly returns `1`, matching
-Go's `math.Pow(0, 0)`. A negative base with a non-integral exponent has no real
-result and returns `422 domain_error`.
+The API rejects unknown request fields to catch client mistakes. Each number is
+parsed to the nearest IEEE-754 binary64 value; values such as integers past
+`2^53` can therefore lose decimal-integer precision. `NaN` and infinity are
+not accepted as inputs. A numeric token outside the finite binary64 range (for
+example `1e400`) is a `422 validation_error`, before calculation.
+
+Results follow Go/IEEE-754 binary64 arithmetic and must be finite. Signed zero
+is finite and valid: it follows the operation's binary64 sign rules, while a
+zero divisor of either sign is a `422 domain_error`. Thus `0 / 0`, `x / +0`,
+and `x / -0` are all domain errors; a zero numerator with a nonzero finite
+divisor is valid. Overflow, an indeterminate result, and a non-real requested
+result are `422 domain_error`; finite underflow to either signed zero is valid.
+`0^0` explicitly returns `1`, matching Go's `math.Pow(0, 0)`. A negative base
+with a non-integral binary64 exponent has no real result and returns `422
+domain_error`; this includes an approximation such as `1 / 3`. A zero base
+with a negative exponent has an infinite result and is likewise a domain error.
+
+Percentage denotes the real-valued formula `a * b / 100` (`a` percent of
+`b`). The implementation may divide one factor by `100` first to avoid an
+avoidable intermediate overflow or underflow; the returned value still follows
+finite binary64 arithmetic and need not reproduce arbitrary-precision decimal
+arithmetic exactly.
 
 ## Design and delivery boundaries
 

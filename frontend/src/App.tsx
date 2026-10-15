@@ -6,14 +6,9 @@ import {
   secondNumberLabel,
   type Operation,
 } from "./calculator";
+import { parseFiniteNumber } from "./number";
 
 const initialOperation: Operation = "add";
-
-function toNumber(value: string): number | null {
-  if (value.trim() === "") return null;
-  const number = Number(value);
-  return Number.isFinite(number) ? number : null;
-}
 
 export default function App() {
   const [operation, setOperation] = useState<Operation>(initialOperation);
@@ -52,8 +47,8 @@ export default function App() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const a = toNumber(firstNumber);
-    const b = toNumber(secondNumber);
+    const a = parseFiniteNumber(firstNumber);
+    const b = parseFiniteNumber(secondNumber);
 
     if (a === null || (needsSecondNumber && b === null)) {
       setResult(null);
