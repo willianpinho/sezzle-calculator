@@ -78,3 +78,16 @@ Swagger-template files remain linted. `pnpm lint` passed after the change.
 
 **Delta verdict: approve.** This is a targeted generated-artifact exclusion and
 does not weaken production-source linting or coverage.
+
+## Publication-documentation delta
+
+The publication documentation correctly records PR #2 at
+`3cc9051b0c0ccbb6cb5da7df7bf0b889d274fcc6` and its successful hosted Actions
+run 38681961976. The four affected records distinguish historical checkpoints
+from current evidence, retain the hosted artifact totals, and direct merge and
+post-merge status to the live PR. They do not claim that merge or a local
+refresh has occurred. The PR is open and the hosted run reports success for the
+frontend, backend, and browser/container jobs.
+
+**Publication-documentation verdict: approve.** The delta is accurate,
+internally consistent, and may proceed to its focused documentation commit.

@@ -59,8 +59,8 @@ CI uploads backend and frontend coverage artifacts on each run.
 
 C1 passes with 100.0% Go statements for every owned production package:
 `cmd/server`, `internal/calculator`, and `internal/httpapi`, as well as 100.0%
-total. It includes server lifecycle and startup-failure behavior, not a package
-exclusion.
+total (186/186 statements in the hosted artifact). It includes server lifecycle
+and startup-failure behavior, not a package exclusion.
 
 ```bash
 (

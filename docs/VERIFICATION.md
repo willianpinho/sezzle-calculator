@@ -111,7 +111,8 @@ Chromium, Firefox, and WebKit. Swagger acceptance blocks external requests,
 loads the real same-origin contract, follows `/api/docs`, and sends live add
 and divide-by-zero requests through Try it out. Responsive screenshots are
 retained as ignored local artifacts by [NUMERIC-UI-RECEIPT.md](NUMERIC-UI-RECEIPT.md).
-Hosted CI remains pending D5 publication.
+The follow-up hosted result is recorded below; the historical baseline above
+remains unchanged.
 
 ## Follow-up dependency and coverage checks
 
@@ -133,8 +134,8 @@ branches, 20/20 functions, and 95/95 lines, as documented in
 [FRONTEND-COVERAGE-RECEIPT.md](FRONTEND-COVERAGE-RECEIPT.md). The independent
 C3 review repeated the unit, regression, browser, and Docker checks and
 approved the final code/test/CI delta; see
-[FOLLOWUP-CODE-REVIEW.md](FOLLOWUP-CODE-REVIEW.md). Hosted CI publication
-remains separate and pending D5.
+[FOLLOWUP-CODE-REVIEW.md](FOLLOWUP-CODE-REVIEW.md). The green hosted result is
+recorded below; PR #2 remains the source for merge and post-merge state.
 
 Follow-up API review approved the binary64/OpenAPI contract. The adversarial
 review found no high- or medium-severity issue. Its one reproduced low local
@@ -142,3 +143,15 @@ race—lint encountering Playwright output during an intentionally parallel
 run—is resolved: ESLint now ignores only generated output directories, and an
 independent concurrent lint/E2E rerun passed. This does not change what lint or
 coverage measures; see [FOLLOWUP-ADVERSARIAL-REVIEW.md](FOLLOWUP-ADVERSARIAL-REVIEW.md).
+
+## Follow-up publication status
+
+[PR #2](https://github.com/willianpinho/sezzle-calculator/pull/2) contains the
+numeric, responsive, OpenAPI, Swagger, documentation, and coverage follow-up
+at commit `3cc9051b0c0ccbb6cb5da7df7bf0b889d274fcc6`.
+[GitHub Actions run 38681961976](https://github.com/willianpinho/sezzle-calculator/actions/runs/38681961976)
+completed successfully for all frontend, backend, and browser/container jobs.
+Its downloaded coverage artifacts report Go 186/186 statements and frontend
+99/99 statements, 72/72 branches, 20/20 functions, and 95/95 lines at 100%.
+PR #2 remains the authoritative record for merge and post-merge local-refresh
+state; this receipt does not claim either has occurred.

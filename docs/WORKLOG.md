@@ -120,8 +120,9 @@ The canonical navigation now starts at `docs/README.md`. `SPEC.md` and the
 served OpenAPI document define the API; `NUMERIC-VALIDATION.md` defines binary64
 boundaries; `ARCHITECTURE.md` records the topology and request sequence. Initial
 coverage and verification reports are explicitly historical because they
-predate this follow-up. Current acceptance evidence remains pending a clean
-integrated D2/D3/QA run.
+predate this follow-up. At this pre-publication checkpoint, current acceptance
+evidence was pending a clean integrated D2/D3/QA run; it was later completed
+and verified in the PR #2 publication checkpoint below.
 
 Swagger assets are generated from a pinned local package and include its bundle
 license reference, `LICENSE`, and `NOTICE`; no CDN or runtime validator is
@@ -132,13 +133,14 @@ Swagger package is development-time asset tooling, not calculator runtime logic.
 The backend endpoint implementation now serves the exact embedded OpenAPI JSON
 at `/api/openapi.json` and returns a `307` redirect from `/api/docs` to
 `/docs/`; non-GET API-documentation requests receive the normal JSON `405` and
-`Allow: GET`. Its specialist measured 100.0% calculator, 92.9% HTTP API, and
-84.5% aggregate backend coverage. This is local D2 evidence, not a complete
-post-follow-up delivery claim.
+`Allow: GET`. Its initial specialist measurement was 100.0% calculator, 92.9%
+HTTP API, and 84.5% aggregate backend coverage. This historical D2 baseline
+was superseded by C1's 100.0% total profile and PR #2's green hosted run.
 
 ## Coverage-extension phase
 
-The user requested 100% coverage of owned production code. The next phase is
+The user requested 100% coverage of owned production code. At the start of this
+phase, the plan was
 explicitly bounded to meaningful tests of actual startup, HTTP, frontend
 bootstrap, and tooling behavior; no production paths will be excluded merely
 to raise a percentage and no tautological assertions count as coverage. The
@@ -154,7 +156,8 @@ script, whose CLI guard now prevents an import from mutating the repository
 `public/docs` directory. C1 likewise measures all three Go production packages
 and total coverage at 100.0%. C3 then independently repeated the unit,
 regression, browser, and Docker checks and approved the final code/test/CI
-delta. Hosted CI publication remains a separate D5 step.
+delta. At that pre-publication checkpoint, hosted CI publication remained a
+separate D5 step; PR #2 later completed its hosted verification below.
 
 Follow-up code and API reviews approved the final implementation. The
 adversarial review found no high- or medium-severity issue; it reproduced one
@@ -162,4 +165,14 @@ low local concurrency edge where lint can traverse a Playwright-generated
 directory while E2E deletes it. Frontend now ignores only generated output
 directories without changing lint or coverage scope; an independent concurrent
 lint/E2E rerun passed, and the critic records the finding as resolved. N4 is
-complete. D5 hosted CI and publication remain separate.
+complete. At that checkpoint, D5 hosted CI and publication remained separate;
+the later PR #2 checkpoint records the successful hosted run.
+
+## Follow-up publication checkpoint
+
+[PR #2](https://github.com/willianpinho/sezzle-calculator/pull/2) opened at
+`3cc9051b0c0ccbb6cb5da7df7bf0b889d274fcc6` after N4 review completion. Its
+[initial hosted CI run](https://github.com/willianpinho/sezzle-calculator/actions/runs/38681961976)
+completed successfully across frontend, backend, and browser/container jobs.
+The PR, rather than this narrative, is the source for merge and post-merge
+state; this checkpoint does not claim either has occurred.

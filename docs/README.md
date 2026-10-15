@@ -43,3 +43,8 @@ historical records, not substitutes for a later full-suite run:
 [PROMPTS.md](PROMPTS.md) records sanitized task prompts. Do not treat a count
 or coverage figure in an older receipt as current after source changes; use the
 commands in [VERIFICATION.md](VERIFICATION.md) instead.
+
+The follow-up publication record is [PR #2](https://github.com/willianpinho/sezzle-calculator/pull/2).
+Its [hosted CI run](https://github.com/willianpinho/sezzle-calculator/actions/runs/38681961976)
+is green; [VERIFICATION.md](VERIFICATION.md) records that result, while PR #2
+remains authoritative for merge and post-merge state.
